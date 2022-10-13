@@ -2,7 +2,6 @@ package com.example.requestme.Service;
 
 import com.example.requestme.models.Orders;
 import com.example.requestme.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Orders newOrder(Orders newOrder){
+    public Orders createOrder(Orders newOrder){
         orderRepository.save(newOrder);
         return newOrder;
     }
@@ -29,6 +28,10 @@ public class OrderService {
         return orders.orElseGet(Orders::new);
     }
 
-    
+    public Orders updateOrderStatus(Long id){
+        Optional<Orders> optionalOrders = orderRepository.findById(id);
+        optionalOrders.ifPresent(orders -> orders.setStatus(false));
+        return null;
+    }
 
 }

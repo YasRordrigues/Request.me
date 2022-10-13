@@ -24,13 +24,17 @@ public class OrderController {
 
     @PostMapping("postOrder")
     public Orders createNewOrder(@RequestBody Orders order){
-        return orderService.newOrder(order);
+        return orderService.createOrder(order);
     }
 
     @GetMapping("findAllOrders")
     public List<OrderDTO> findAllPosts(){
         return orderService.getAllOrders().stream().map(orders -> modelMapper.map(orders,OrderDTO.class))
                 .collect(Collectors.toList());
+    }
+    @PutMapping("updateOrderStatus/{id}")
+    public Orders changeOrderStatus(@PathVariable(name = "id") Long id){
+        return orderService.updateOrderStatus(id);
     }
     @GetMapping("getOrderById/{id}")
     public OrderDTO findById(@PathVariable(name = "id") Long id){

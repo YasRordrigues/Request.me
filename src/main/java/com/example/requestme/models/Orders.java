@@ -16,6 +16,6 @@ public class Orders {
     @Id
     @GeneratedValue
     private Long id;
-
     private String box;
+    private Boolean status = true;
 }
