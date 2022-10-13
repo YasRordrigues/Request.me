@@ -14,24 +14,32 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Orders createOrder(Orders newOrder){
+    public Orders createOrder(Orders newOrder) {
         orderRepository.save(newOrder);
         return newOrder;
     }
 
-    public List<Orders> getAllOrders(){
+    public List<Orders> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    public Orders getOrderById(Long id){
+    public Orders getOrderById(Long id) {
         Optional<Orders> orders = orderRepository.findById(id);
         return orders.orElseGet(Orders::new);
     }
 
-    public Orders updateOrderStatus(Long id){
+    public Orders updateOrderStatus(Long id) {
         Optional<Orders> optionalOrders = orderRepository.findById(id);
-        optionalOrders.ifPresent(orders -> orders.setStatus(false));
-        return null;
+
+        if (optionalOrders.isPresent()) {
+            Orders updated_user = optionalOrders.get();
+            updated_user.setStatus(false);
+            return orderRepository.save(updated_user);
+        }
+        else {
+            return null;
+        }
+
     }
 
 }
