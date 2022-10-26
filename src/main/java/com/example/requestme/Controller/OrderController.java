@@ -2,7 +2,7 @@ package com.example.requestme.Controller;
 
 import com.example.requestme.Service.OrderService;
 import com.example.requestme.dtos.OrderDTO;
-import com.example.requestme.models.Orders;
+import com.example.requestme.models.Order;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +23,24 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("postOrder")
-    public Orders createNewOrder(@RequestBody Orders order){
+    public Order createNewOrder(@RequestBody Order order){
         return orderService.createOrder(order);
     }
 
     @GetMapping("findAllOrders")
     public List<OrderDTO> findAllPosts(){
-        return orderService.getAllOrders().stream().map(orders -> modelMapper.map(orders,OrderDTO.class))
+        return orderService.getAllOrders().stream().map(order -> modelMapper.map(order,OrderDTO.class))
                 .collect(Collectors.toList());
     }
     @PutMapping("updateOrderStatus/{id}")
-    public Orders changeOrderStatus(@PathVariable(name = "id") Long id){
+    public Order changeOrderStatus(@PathVariable(name = "id") Long id){
         return orderService.updateOrderStatus(id);
     }
 
     @GetMapping("getOrderById/{id}")
     public OrderDTO findById(@PathVariable(name = "id") Long id){
-        Orders orders = orderService.getOrderById(id);
-        OrderDTO orderResponse = modelMapper.map(orders, OrderDTO.class);
+        Order order = orderService.getOrderById(id);
+        OrderDTO orderResponse = modelMapper.map(order, OrderDTO.class);
 
         return ResponseEntity.ok().body(orderResponse).getBody();
     }

@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "1234"
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
@@ -19,4 +19,4 @@ networks:
     driver: bridge
 
 volumes:
-    postgres:
+  postgres:

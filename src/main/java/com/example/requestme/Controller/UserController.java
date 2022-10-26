@@ -5,6 +5,8 @@ import com.example.requestme.dtos.UserDTO;
 import com.example.requestme.models.User;
 import com.example.requestme.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,44 +18,34 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
 
     @Autowired
-    private ModelMapper modelMapper;
     private UserService userService;
 
     @GetMapping("listAll")
-    public List<UserDTO> listAll() {
-        return userService.getAllUser().stream().map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<UserDTO>> listAll() {
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
     @GetMapping("findById/{id}")
-    public UserDTO findById(@PathVariable(name = "id") Long id) {
-        User user = userService.getUserById(id);
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
+    public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
 
-        return ResponseEntity.ok().body(userResponse).getBody();
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
 
     @PutMapping("updateUser/{id}")
-    public ResponseEntity<UserDTO> UserDTOUpdate(@PathVariable(name = "id") Long id) {
-        User user = userService.getUserById(id);
-        UserDTO userResponse = modelMapper.map(user, UserDTO.class);
-
-        return ResponseEntity.ok().body(userResponse);
+    public ResponseEntity<UserDTO> UserDTOUpdate(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDto) {
+        return new ResponseEntity<>(userService.updateUser(id, userDto), HttpStatus.OK);
     }
 
 
-
     @PostMapping("createUser")
-    public UserDTO createUser(@RequestBody UserDTO userDTO){
-        User userRequest = modelMapper.map(userDTO, User.class);
-        userService.createUser(userRequest);
-        return modelMapper.map(userRequest, UserDTO.class);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
+        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping("deleteUser/{id}")

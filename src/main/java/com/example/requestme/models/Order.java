@@ -1,8 +1,6 @@
 package com.example.requestme.models;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +10,7 @@ import javax.persistence.Table;
 @Data
 @Table(name = "orders")
 @Entity
-public class Orders {
+public class Order {
     @Id
     @GeneratedValue
     private Long id;
