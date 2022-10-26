@@ -1,12 +1,15 @@
 package com.example.requestme.Service;
 
+import com.example.requestme.dtos.OrderDTO;
 import com.example.requestme.models.Order;
 import com.example.requestme.repository.OrderRepository;
+import com.example.requestme.utils.ConvertOrderDtoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -14,32 +17,32 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public Order createOrder(Order newOrder) {
-        orderRepository.save(newOrder);
+    public OrderDTO createOrder(OrderDTO newOrder) {
+        Order order = ConvertOrderDtoUtil.convertToEntity(newOrder);
+        orderRepository.save(order);
         return newOrder;
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll().stream().map(ConvertOrderDtoUtil::convertToDto).collect(Collectors.toList());
     }
 
-    public Order getOrderById(Long id) {
-        Optional<Order> orders = orderRepository.findById(id);
-        return orders.orElseGet(Order::new);
+    public OrderDTO getOrderById(Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        return order.map(ConvertOrderDtoUtil::convertToDto).orElse(null);
     }
 
-    public Order updateOrderStatus(Long id) {
+    public OrderDTO updateOrderStatus(Long id) {
         Optional<Order> optionalOrders = orderRepository.findById(id);
 
         if (optionalOrders.isPresent()) {
-            Order updated_user = optionalOrders.get();
+            OrderDTO updated_user = ConvertOrderDtoUtil.convertToDto(optionalOrders.get());
             updated_user.setStatus(false);
-            return orderRepository.save(updated_user);
-        }
-        else {
-            return null;
+            orderRepository.save(ConvertOrderDtoUtil.convertToEntity(updated_user));
+            return updated_user;
         }
 
+        return null;
     }
 
 }

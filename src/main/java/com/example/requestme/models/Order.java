@@ -14,6 +14,6 @@ public class Order {
     @Id
     @GeneratedValue
     private Long id;
-    private String box;
+    private String description;
     private Boolean status = true;
 }
