@@ -1,5 +1,6 @@
 package com.example.requestme.dtos;
 
+import com.example.requestme.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,15 +13,14 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+    private String username;
 
-    private String name;
-
-    private  String email;
-
-    private String password;
-
-    private String pixKey;
+    public static UserDTO from(User user) {
+        return builder()
+                .id(user.getUser_id())
+                .username(user.getUsername())
+                .build();
+    }
 
 }

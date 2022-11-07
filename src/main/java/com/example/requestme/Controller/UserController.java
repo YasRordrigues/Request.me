@@ -2,50 +2,36 @@ package com.example.requestme.Controller;
 
 import com.example.requestme.Services.UserService;
 import com.example.requestme.dtos.UserDTO;
-import lombok.RequiredArgsConstructor;
+import com.example.requestme.models.User;
+import com.example.requestme.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
-    @GetMapping("listAll")
-    public ResponseEntity<List<UserDTO>> listAll() {
-        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
+    @GetMapping("/{id}")
+    @PreAuthorize("#user.id == #id")
+    public ResponseEntity user(@AuthenticationPrincipal User user, @PathVariable String id) {
+        return ResponseEntity.ok(UserDTO.from(userRepository.findById(Long.valueOf(id)).orElseThrow()));
     }
 
-    @GetMapping("findById/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
-
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    @GetMapping()
+    public List<User> getAll() {
+        return userService.listAll();
     }
-
-
-    @PutMapping("updateUser/{id}")
-    public ResponseEntity<UserDTO> UserDTOUpdate(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDto) {
-        return new ResponseEntity<>(userService.updateUser(id, userDto), HttpStatus.OK);
-    }
-
-
-    @PostMapping("createUser")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
-        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("deleteUser/{id}")
-   public void deleteUser(@PathVariable(name = "id") Long id){
-          userService.deleteUser(id);
-    }
-
-
 }

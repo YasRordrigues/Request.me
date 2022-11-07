@@ -35,6 +35,7 @@ public class WebSecurity {
     JwtToUserConverter jwtToUserConverter;
     @Autowired
     KeyUtils keyUtils;
+    @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     UserDetailsManager userDetailsManager;
