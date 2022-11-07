@@ -1,16 +1,17 @@
-package com.example.requestme.Service;
+package com.example.requestme.Services;
 
 import com.example.requestme.dtos.UserDTO;
 import com.example.requestme.models.User;
 import com.example.requestme.repository.UserRepository;
 import com.example.requestme.utils.ConvertUserDtoUtil;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,12 +23,14 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+   PasswordEncoder passwordEncoder;
+
     public UserDTO createUser(UserDTO user) {
 
         UserDTO userDTO = UserDTO.builder()
                 .email(user.getEmail())
                 .name(user.getName())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .pixKey(user.getPixKey())
                 .build();
 
@@ -67,5 +70,16 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public boolean userExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        MessageFormat.format("username {0} not found", username)
+                ));
     }
 }

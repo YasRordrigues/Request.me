@@ -1,8 +1,12 @@
 package com.example.requestme.models;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 
 @Data
 @Entity
@@ -12,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -25,10 +29,34 @@ public class User {
 
     private String pixKey;
 
-    public User(String name, String email, String password, String pixKey) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.pixKey= pixKey;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

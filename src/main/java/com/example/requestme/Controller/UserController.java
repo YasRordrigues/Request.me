@@ -1,13 +1,8 @@
 package com.example.requestme.Controller;
 
-import com.example.requestme.Service.UserService;
+import com.example.requestme.Services.UserService;
 import com.example.requestme.dtos.UserDTO;
-import com.example.requestme.models.User;
-import com.example.requestme.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,8 +43,8 @@ public class UserController {
     }
 
     @DeleteMapping("deleteUser/{id}")
-    ResponseEntity<UserDTO>  deleteUser(@PathVariable(name = "id") Long id){
-        return ResponseEntity.noContent().build();
+   public void deleteUser(@PathVariable(name = "id") Long id){
+          userService.deleteUser(id);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.requestme.Service;
+package com.example.requestme.Services;
 
 import com.example.requestme.dtos.OrderDTO;
 import com.example.requestme.models.Order;
