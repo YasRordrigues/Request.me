@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsManager {
@@ -23,6 +24,13 @@ public class UserService implements UserDetailsManager {
 
     public List<User> listAll() {
         return userRepository.findAll();
+    }
+
+    public User getById(Long id) {
+
+        Optional<User> user = userRepository.findById(id);
+
+        return user.orElse(null);
     }
 
     @Override

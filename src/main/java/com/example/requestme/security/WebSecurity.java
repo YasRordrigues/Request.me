@@ -44,7 +44,8 @@ public class WebSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .antMatchers("/api/auth/*").permitAll()
+                        .antMatchers("/api/auth/**").permitAll()
+                        .antMatchers("/api/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()

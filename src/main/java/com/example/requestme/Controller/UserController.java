@@ -30,8 +30,13 @@ public class UserController {
         return ResponseEntity.ok(UserDTO.from(userRepository.findById(Long.valueOf(id)).orElseThrow()));
     }
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public List<User> getAll() {
         return userService.listAll();
+    }
+
+    @GetMapping("findById/{id}")
+    public User findById(@PathVariable Long id) {
+        return userService.getById(id);
     }
 }
