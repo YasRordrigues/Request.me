@@ -27,7 +27,6 @@ public class UserService implements UserDetailsManager {
     }
 
     public User getById(Long id) {
-
         Optional<User> user = userRepository.findById(id);
 
         return user.orElse(null);
