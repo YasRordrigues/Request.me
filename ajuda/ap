@@ -1,0 +1,18 @@
+server:
+  port: 8082
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8081/eureka/
+
+spring:
+#  cloud:
+#    discovery:
+#      enabled: true
+  application:
+    name: user-service
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/requestme
+    username: postgres
+    password: postgres

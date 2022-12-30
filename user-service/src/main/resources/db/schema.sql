@@ -1,0 +1,9 @@
+CREATE SCHEMA IF NOT EXISTS users;
+
+CREATE TABLE IF NOT EXISTS users.users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    pix_key VARCHAR(40) UNIQUE NOT NULL,
+    description TEXT NULL,
+    role TEXT NOT NULL
+);
