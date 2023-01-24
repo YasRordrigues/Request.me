@@ -2,12 +2,12 @@ server:
   port: 8082
 
 spring:
-  #  cloud:
-  #    discovery:
-  #      enabled: true
+  cloud:
+    discovery:
+      enabled: true
   application:
     name: user-service
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/requestme
-    username: postgres
-    password: postgres
+    username: requestme
+    password: requestme
