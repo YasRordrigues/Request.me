@@ -16,6 +16,7 @@ public class UserService implements IUserService {
 
     @Autowired
     IUserRepository userRepository;
+
     @Override
     public Flux<UserResponseDto> findAllUsers() {
         return userRepository
