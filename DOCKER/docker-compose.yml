@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  requestme_database:
+    container_name: requestme-database
+    restart: unless-stopped
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: requestme
+      POSTGRES_PASSWORD: requestme
+      POSTGRES_DB: requestme
+
+networks:
+  requestme-network:
+    name: requestme-network
